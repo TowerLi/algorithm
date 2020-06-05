@@ -1,5 +1,7 @@
 package com.kimsohyun.xyz;
 
+import java.util.Arrays;
+
 public class Day20200605 {
     /**
      * 面试题29. 顺时针打印矩阵
@@ -66,14 +68,120 @@ public class Day20200605 {
         return spiralorder;
     }
 
+   public void quicksort(int[] arr, int left, int right) {
+        if (arr == null || arr.length == 0) {
+            return;
+        }
+        if (left >= right) {
+            return;
+        }
+        //中位数
+        int pivotindex = left + ((right-left) >> 1);
+        int pivot = arr[pivotindex];
+
+        int i = left, j = right;
+        while (i <= j) {
+            while (arr[i] < pivot) {
+                i++;
+            }
+            while (arr[j] > pivot) {
+                j--;
+            }
+            if (i <= j) {
+                swapele(arr,i,j);
+                i++;
+                j--;
+            }
+        }
+        if (left < j) {
+            quicksort(arr,left,j);
+        }
+        if (right > i) {
+            quicksort(arr,i,right);
+        }
+   }
+
+   public static void swapele(int[] arr,int a,int b) {
+        int temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+   }
+
+    public static void quickSort2(int[] arr, int low, int high)
+    {
+        //check for empty or null array
+        if (arr == null || arr.length == 0){
+            return;
+        }
+
+        if (low >= high){
+            return;
+        }
+
+        //Get the pivot element from the middle of the list
+        int middle = low + ((high - low) >> 1);
+        int pivot = arr[middle];
+
+        // make left < pivot and right > pivot
+        int i = low, j = high;
+        while (i <= j)
+        {
+            //Check until all values on left side array are lower than pivot
+            while (arr[i] < pivot)
+            {
+                i++;
+            }
+            //Check until all values on left side array are greater than pivot
+            while (arr[j] > pivot)
+            {
+                j--;
+            }
+            //Now compare values from both side of lists to see if they need swapping
+            //After swapping move the iterator on both lists
+            if (i <= j)
+            {
+                swap (arr, i, j);
+                i++;
+                j--;
+            }
+        }
+        //Do same operation as above recursively to sort two sub arrays
+        if (low < j){
+            quickSort2(arr, low, j);
+        }
+        if (high > i){
+            quickSort2(arr, i, high);
+        }
+    }
+    public static void swap (int array[], int x, int y)
+    {
+        int temp = array[x];
+        array[x] = array[y];
+        array[y] = temp;
+    }
+
+    public void sort(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return;
+        }
+        int length = arr.length;
+        //quicksort(arr,0,length-1);
+    }
+
     public static void main(String[] args) {
         Day20200605 d5 = new Day20200605();
+        /*
         int[][] test = {{1,2,3},{4,5,6},{7,8,9}};
         int[] ans = d5.spiralOrder(test);
         System.out.println("the ans is ");
         for (int i : ans) {
             System.out.print(i);
             System.out.print(" ");
-        }
+        }*/
+        int[] unsortedArray = {6, 5, 3, 1, 8, 7, 2, 4};
+
+        System.out.println("Unsorted Arrays: " + Arrays.toString(unsortedArray));
+        d5.quicksort(unsortedArray,0,unsortedArray.length-1);
+        System.out.println("Sorted Arrays :" + Arrays.toString(unsortedArray));
     }
 }
