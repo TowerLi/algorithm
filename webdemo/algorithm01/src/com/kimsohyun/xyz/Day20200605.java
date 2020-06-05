@@ -25,7 +25,55 @@ public class Day20200605 {
      * @return
      */
     public int[] spiralOrder(int[][] matrix) {
+        //按层遍历
+        //时间复杂度O(MN) ，遍历所有矩阵的元素
+        //空间复杂度O（1），除了输出数组外，空间复杂度是常数。
 
-        return new int[]{};
+        // 上 top,left ... top,right
+        // 右 top+1,right ... bottom,right
+        // 下 bottom,right-1 ... bottom,left+1
+        // 左 bottom,left ... top+1,left
+
+        //特判
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return new int[0];
+        }
+        int rows = matrix.length, columns = matrix[0].length;
+        int[] spiralorder = new int[rows*columns];
+        int index = 0;
+        int left = 0, right = columns - 1, top = 0, bottom = rows - 1;
+
+        while (left <= right && top <= bottom) {
+            for (int column = left; column <= right; column++) {
+                spiralorder[index++] = matrix[top][column];
+            }
+            for (int row = top + 1; row <= bottom; row++) {
+                spiralorder[index++] = matrix[row][right];
+            }
+            if (left < right && top < bottom) {
+                for (int column = right - 1; column >= left + 1; column--) {
+                    spiralorder[index++] = matrix[bottom][column];
+                }
+                for (int row = bottom; row >= top + 1; row--) {
+                    spiralorder[index++] = matrix[row][left];
+                }
+            }
+            top++;
+            left++;
+            bottom--;
+            right--;
+        }
+        return spiralorder;
+    }
+
+    public static void main(String[] args) {
+        Day20200605 d5 = new Day20200605();
+        int[][] test = {{1,2,3},{4,5,6},{7,8,9}};
+        int[] ans = d5.spiralOrder(test);
+        System.out.println("the ans is ");
+        for (int i : ans) {
+            System.out.print(i);
+            System.out.print(" ");
+        }
     }
 }
