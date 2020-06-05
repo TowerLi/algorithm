@@ -12,6 +12,7 @@ public class Day20200426 {
     }
 
     public static void main(String[] args) {
+        int abc = 0;
         ListNode l1 = new ListNode(1);
         l1.next = new ListNode(4);
         l1.next.next = new ListNode(5);
@@ -64,7 +65,7 @@ public class Day20200426 {
 
         if (a.val <= b.val)  {
             a.next = merge2Lists(a.next, b);
-            return a;
+            return  a;
         } else {
             b.next = merge2Lists(a, b.next);
             return b;
