@@ -13,6 +13,7 @@ public class Day20200426 {
 
     public static void main(String[] args) {
         int abc = 0;
+        int ca = 0;
         ListNode l1 = new ListNode(1);
         l1.next = new ListNode(4);
         l1.next.next = new ListNode(5);
