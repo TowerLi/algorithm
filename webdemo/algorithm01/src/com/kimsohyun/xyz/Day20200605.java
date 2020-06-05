@@ -69,7 +69,7 @@ public class Day20200605 {
     }
         //快速排序
    public void quicksort(int[] arr, int left, int right) {
-        int test;
+        int test = 0;
         if (arr == null || arr.length == 0) {
             return;
         }
