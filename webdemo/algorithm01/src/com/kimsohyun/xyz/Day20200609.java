@@ -40,11 +40,126 @@ public class Day20200609 {
         return Math.min(cost1,cost2);
     }
 
+
+    /**
+     * 面试题46. 把数字翻译成字符串
+     * 给定一个数字，我们按照如下规则把它翻译为字符串：0 翻译成 “a” ，1 翻译成 “b”，……，11 翻译成 “l”，……，25 翻译成 “z”。一个数字可能有多个翻译。请编程实现一个函数，用来计算一个数字有多少种不同的翻译方法。
+     *
+     *
+     *
+     * 示例 1:
+     *
+     * 输入: 12258
+     * 输出: 5
+     * 解释: 12258有5种不同的翻译，分别是"bccfi", "bwfi", "bczi", "mcfi"和"mzi"
+     * 提示：
+     *
+     * 0 <= num < 231
+     * @param num
+     * @return
+     */
+    public int translateNum(int num) {
+        //青蛙跳楼梯的变种
+        //若能直接翻译numi-2numi-1 dp[i] = dp[i-1]+dp[i-2]
+        //若不能直接翻译numi-2numi-1 dp [i] = dp[i-1]
+        /**
+         *
+         * const translateNum = (num) => {
+         *   const str = num.toString()
+         *   const n = str.length
+         *   const dp = new Array(n + 1)
+         *   dp[0] = 1
+         *   dp[1] = 1
+         *   for (let i = 2; i < n + 1; i++) {
+         *     const temp = Number(str[i - 2] + str[i - 1])
+         *     if (temp >= 10 && temp <= 25) {
+         *       dp[i] = dp[i - 1] + dp[i - 2]
+         *     } else {
+         *       dp[i] = dp[i - 1]
+         *     }
+         *   }
+         *   return dp[n] // 翻译前n个数的方法数，即整个数字
+         * }
+         *
+         * 作者：hyj8
+         * 链接：https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/solution/shou-hui-tu-jie-dfsdi-gui-ji-yi-hua-di-gui-dong-ta/
+         * 来源：力扣（LeetCode）
+         * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+         *
+         * const translateNum = (num) => {
+         *   const str = num.toString()
+         *   const n = str.length
+         *   let prev = 1
+         *   let cur = 1
+         *   for (let i = 2; i < n + 1; i++) {
+         *     const temp = Number(str[i - 2] + str[i - 1])
+         *     if (temp >= 10 && temp <= 25) {
+         *       const t = cur // 缓存上个状态
+         *       cur = prev + cur // 当前状态=上上个状态+上个状态
+         *       prev = t // 更新上上个状态
+         *     } else {
+         *       // cur = cur
+         *       prev = cur // 更新上上个状态
+         *     }
+         *   }
+         *   return cur
+         * }
+         *
+         * 作者：hyj8
+         * 链接：https://leetcode-cn.com/problems/ba-shu-zi-fan-yi-cheng-zi-fu-chuan-lcof/solution/shou-hui-tu-jie-dfsdi-gui-ji-yi-hua-di-gui-dong-ta/
+         * 来源：力扣（LeetCode）
+         * 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+         */
+        String str = String.valueOf(num);
+        int n = str.length();
+        //代表前N个数字可以翻译成的字符串个数
+        int[] dp = new int[n+1];
+        // 对于数字23， 前1 dp[1] = 1,dp[2] = 2,所以 dp[0] = 1;
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2;i < n + 1; i++) {
+            //i-2,i-1 两个数字
+            String temp = str.substring(i-2,i);
+            if (temp.compareTo("25") <= 0 && temp.compareTo("10") >= 0) {
+                dp[i] = dp[i-1] + dp[i-2];
+            }else {
+                dp[i] = dp[i-1];
+            }
+        }
+        return dp[n];
+    }
+
+    public int translateNum2(int num) {
+        String str = String.valueOf(num);
+        int n = str.length();
+        int prev = 1;
+        int curr = 1;
+        for (int i = 2;i < n + 1; i++) {
+            String temp = str.substring(i-2,i);
+            if (temp.compareTo("25") <= 0 && temp.compareTo("10") >= 0) {
+                int t = curr;   //缓存上一个状态
+                curr = prev + curr; //当前状态= 上个状态 + 上上个状态
+                prev = t;       //更新上上个状态
+            }else {
+                prev = curr;    //更新上上个状态
+            }
+        }
+        return curr;
+    }
+
+
     public static void main(String[] args) {
         Day20200609 d9 = new Day20200609();
         int[] cost = {10,15,20};
         int[] cost2 = {1, 100, 1, 1, 1, 100, 1, 1, 100, 1};
         int ans = d9.minCostClimbingStairs(cost2);
+        System.out.println("ans is :");
+        System.out.println(ans);
+        int num = 12256;
+        ans = d9.translateNum(num);
+        System.out.println("ans is :");
+        System.out.println(ans);
+        ans = d9.translateNum2(num);
         System.out.println("ans is :");
         System.out.println(ans);
     }
